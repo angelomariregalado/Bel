@@ -1,0 +1,127 @@
+﻿<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+            is an ideal platform for building RESTful applications on the .NET Framework.
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getUsTaxRate();
+            getCaTaxRate();
+            getUsSalesTax();
+        });
+
+        function getUsTaxRate() {
+            //var data = {
+            //    "zip": "90404",
+            //    "city": "Santa Monica",
+            //    "state": "CA",
+            //    "country": "US"
+            //};
+
+            var data = {
+                "zip": "05495-2086",
+                "street": "312 Hurricane Lane",
+                "city": "Williston",
+                "state": "VT",
+                "country": "US"
+            };
+
+            $.ajax({
+                url: '/api/taxrate/us',
+                method: 'get',
+                contentType: 'application/json',
+                data: data,
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+
+        function getCaTaxRate() {
+            var data = {
+                "zip": "66777",
+                "country": "CA"
+            }
+
+            $.ajax({
+                url: '/api/taxrate/ca',
+                method: 'get',
+                contentType: 'application/json',
+                data: data,
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+
+        function getUsSalesTax() {
+            var data = {
+                "from_country": "US",
+                "from_zip": "92093",
+                "from_state": "CA",
+                "from_city": "La Jolla",
+                "from_street": "9500 Gilman Drive",
+                "to_country": "US",
+                "to_zip": "90002",
+                "to_state": "CA",
+                "to_city": "Los Angeles",
+                "to_street": "1335 E 103rd St",
+                "amount": 15,
+                "shipping": 1.5,
+                "nexus_addresses": [
+                    {
+                        "id": "Main Location",
+                        "country": "US",
+                        "zip": "92093",
+                        "state": "CA",
+                        "city": "La Jolla",
+                        "street": "9500 Gilman Drive"
+                    }
+                ],
+                "line_items": [
+                    {
+                        "id": "1",
+                        "quantity": 1,
+                        "product_tax_code": "20010",
+                        "unit_price": 15,
+                        "discount": 0
+                    }
+                ]
+            };
+
+            $.ajax({
+                url: '/api/salestax/us',
+                method: 'post',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: data,
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    </script>
+}
